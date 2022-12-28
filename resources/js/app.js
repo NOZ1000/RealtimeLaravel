@@ -37,7 +37,7 @@ import './bootstrap';
 //         notificationElement.classList.add('alert-' + e.type);
 //     });
 
-window.Echo.channel('notifications')
+window.Echo.private('notifications')
     .listen('.App\\Events\\UserSessionChanged', (e) => {
         const notificationElement = document.getElementById('notification');
 
