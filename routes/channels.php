@@ -18,5 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('notifications', function ($user) {
+    // \Log::debug("HHHHHHHHH".$user);
     return $user != null;
 });
