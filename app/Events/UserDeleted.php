@@ -35,7 +35,7 @@ class UserDeleted implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        \Log::debug("Deleted ".$this->user);
+        // \Log::debug("Deleted ".$this->user);
         return new Channel('users');
     }
 }

@@ -35,7 +35,7 @@ class UserCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        \Log::debug("Created ".$this->user);
+        // \Log::debug("Created ".$this->user);
         return new Channel('users');
     }
 }
