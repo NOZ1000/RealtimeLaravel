@@ -39,6 +39,34 @@
         });
     });
 </script>
+
+<script type="module">
+    import 'http://localhost:5173/resources/js/bootstrap';
+
+    window.Echo.channel('users')
+        .listen('.App\\Events\\UserCreated' , (e) => {
+            const usersElement = document.getElementById('users');
+            let element = document.createElement('li');
+
+            console.log("EEEEEEEEEEE", e.user.id);
+            element.setAttribute('id', e.user.id);
+            element.innerText = e.user.name;
+
+            usersElement.appendChild(element);
+        })
+        .listen('.App\\Events\\UserUpdated' , (e) => {
+            const element = document.getElementById(e.user.id);
+
+            element.innerText = e.user.name;
+
+        })
+        .listen('.App\\Events\\UserDeleted' , (e) => {
+            const element = document.getElementById(e.user.id);
+
+            element.parentNode.removeChild(element);
+        });
+</script>
+
 @endpush
 
 @stack('scripts')
