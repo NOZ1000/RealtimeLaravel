@@ -34,7 +34,7 @@
                     <hr>
                     <div class="text-center">
                         <label class="font-weight-bold h5">Your Bet</label>
-                        <select class="custom-select col-auto">
+                        <select id="bet"  class="custom-select col-auto">
                             <option selected>Not in</option>
 
                             @foreach (range(1, 12) as $number)
@@ -56,7 +56,47 @@
 
 @push('scripts')
 <script type="module">
+    import 'http://[::1]:5173/resources/js/bootstrap.js';
 
+    console.log('GAme Script');
+    const circleElement = document.getElementById('circle');
+    const timerElement = document.getElementById('timer');
+    const winnerElement = document.getElementById('winner');
+    const resultElement = document.getElementById('result');
+    const betElement = document.getElementById('bet');
+
+// WinnerNumberGenerated
+    Echo.channel('game')
+        .listen('.App\\Events\\RemainingTimeChanged', (e) => {
+            timerElement.innerText = e.time;
+
+            circleElement.classList.add('refresh');
+            
+            winnerElement.classList.add('d-none');
+            
+            resultElement.innerText = '';
+            
+            winnerElement.classList.remove('text-success');
+            winnerElement.classList.remove('text-danger');
+        })
+        .listen(".App\\Events\\WinnerNumberGenerated", (e) => {
+            circleElement.classList.remove('refresh');
+
+            let winner = e.number;
+            winnerElement.innerText = winner;
+            winnerElement.classList.remove('d-none');
+
+            let bet = betElement[betElement.selectedIndex].innerText;
+
+            if (bet == winner) {
+                resultElement.innerText = 'You Win';
+                winnerElement.classList.add('text-success');
+            } else {
+                resultElement.innerText = 'You Lose';
+                winnerElement.classList.add('text-danger');
+            }
+        });
+    
 </script>
 @endpush
 
