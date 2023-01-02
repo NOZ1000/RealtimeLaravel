@@ -79,8 +79,25 @@
             const element = document.getElementById(user.id);
 
             element.parentNode.removeChild(element);
-        })
-        .listen();
+        });
+</script>
+
+<script type="module">
+    import 'http://localhost:5173/resources/js/bootstrap';
+    const messageElement = document.getElementById('message');
+    const sendElement = document.getElementById('send');
+
+
+    sendElement.addEventListener('click', (e) => {
+        e.preventDefault();
+
+
+        window.axios.post('/chat/message', {
+            message: messageElement.value,
+        });
+
+        messageElement.value = "";
+    })
 </script>
 @endpush
 

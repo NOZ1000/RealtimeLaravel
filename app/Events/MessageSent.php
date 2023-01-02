@@ -28,6 +28,7 @@ class MessageSent implements ShouldBroadcast
     public function __construct(User $user, $message)
     {
         $this->user = $user;
+        $this->message = $message; 
     }
 
     /**
@@ -37,7 +38,7 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        \Log::debug($this->user.": ".$this->message);
+        // \Log::debug($this->user->name.": ".$this->message);
         return new PresenceChannel('users');
     }
 }
