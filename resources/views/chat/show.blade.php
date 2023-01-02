@@ -20,8 +20,7 @@
                             <div class="row">
                                 <div class="col-12 border rounded-lg p-23">
                                     <ul id="messages" class="list-unstyled overflow-auto" style="height: 45vh">
-                                        <li>Test1 sdsdf</li>
-                                        <li>Test2 sdsdd</li>
+ 
                                     </ul>
                                 </div>
                                 <form action="">
@@ -53,7 +52,9 @@
 @push('scripts')
 <script type="module">
     import 'http://localhost:5173/resources/js/bootstrap';
+
     const usersElement = document.getElementById('users');
+    const messagesElement = document.getElementById('messages');
 
     Echo.join('chat')
         .here((users) => {
@@ -79,6 +80,13 @@
             const element = document.getElementById(user.id);
 
             element.parentNode.removeChild(element);
+        })
+        .listen('.App\\Events\\MessageSent', (e) => {
+            let element = document.createElement('li');
+
+            element.innerText = e.user.name + ': ' + e.message;
+
+            messagesElement.appendChild(element);
         });
 </script>
 
@@ -97,7 +105,8 @@
         });
 
         messageElement.value = "";
-    })
+    });
+
 </script>
 @endpush
 
