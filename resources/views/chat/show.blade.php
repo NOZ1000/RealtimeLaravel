@@ -39,8 +39,7 @@
                         <div class="col-2">
                             <p><strong>Online Now</strong></p>
                             <ul id="users" class="list-unstyled overflow-auto text-info" style="height: 45hv">
-                                <li>Test1</li>
-                                <li>Test2</li>
+
                             </ul>
                         </div>
                     </div>
@@ -53,7 +52,35 @@
 
 @push('scripts')
 <script type="module">
+    import 'http://localhost:5173/resources/js/bootstrap';
+    const usersElement = document.getElementById('users');
 
+    Echo.join('chat')
+        .here((users) => {
+            users.forEach((user, index) => {
+            let element = document.createElement('li');
+
+            element.setAttribute('id', user.id);
+            element.innerText = user.name;
+
+            usersElement.appendChild(element);
+
+        });
+        })
+        .joining((user) => {
+            let element = document.createElement('li');
+
+            element.setAttribute('id', user.id);
+            element.innerText = user.name;
+
+            usersElement.appendChild(element);
+        })
+        .leaving((user) => {
+            const element = document.getElementById(user.id);
+
+            element.parentNode.removeChild(element);
+        })
+        .listen();
 </script>
 @endpush
 
