@@ -2,6 +2,9 @@
 
 @push('styles')
     <style type="text/css">
+        #users > li {
+            cursor: pointer;
+        }
     </style>
 @endpush
 
@@ -39,7 +42,7 @@
                             <p><strong>Online Now</strong></p>
                             <ul id="users" class="list-unstyled overflow-auto text-info" style="height: 45hv">
 
-                            </ul>
+                            </ul>                          
                         </div>
                     </div>
                 </div>
@@ -56,22 +59,38 @@
     const usersElement = document.getElementById('users');
     const messagesElement = document.getElementById('messages');
 
+    function greetUser(id) 
+    {
+        window.axios.post('/chat/greet/' + id);
+        console.log("Greeting works");
+    }
+
     Echo.join('chat')
         .here((users) => {
             users.forEach((user, index) => {
             let element = document.createElement('li');
 
             element.setAttribute('id', user.id);
+            element.addEventListener('click', (e) => {
+                window.axios.post('/chat/greet/' + user.id);
+                console.log("Greeting works");
+            });
             element.innerText = user.name;
 
             usersElement.appendChild(element);
-
-        });
+            });
         })
         .joining((user) => {
             let element = document.createElement('li');
 
             element.setAttribute('id', user.id);
+
+
+            element.addEventListener('click', (e) => {
+                window.axios.post('/chat/greet/' + user.id);
+                console.log("Greeting works");
+            });
+
             element.innerText = user.name;
 
             usersElement.appendChild(element);
@@ -88,6 +107,7 @@
 
             messagesElement.appendChild(element);
         });
+
 </script>
 
 <script type="module">
