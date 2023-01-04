@@ -73,7 +73,7 @@
             element.setAttribute('id', user.id);
             element.addEventListener('click', (e) => {
                 window.axios.post('/chat/greet/' + user.id);
-                console.log("Greeting works");
+                
             });
             element.innerText = user.name;
 
@@ -127,6 +127,21 @@
         messageElement.value = "";
     });
 
+</script>
+
+<script type="module">
+    import 'http://localhost:5173/resources/js/bootstrap';
+
+    Echo.private('chat.greet.{{ auth()->user()->id }}')
+        .listen('.App\\Events\\GreetingSent', (e) => {
+            const messagesElement = document.getElementById('messages');
+            let element = document.createElement('li');
+
+            element.innerText = e.message;
+            element.classList.add('list-group-item-success');
+
+            messagesElement.appendChild(element);
+        });
 </script>
 @endpush
 
