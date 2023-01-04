@@ -12,11 +12,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent implements ShouldBroadcast
+class GreetingSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    protected $user;
 
     public $message;
 
@@ -38,7 +38,7 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // \Log::debug($this->user.": ".$this->message);
-        return new PresenceChannel('chat');
+        // \Log::debug($this->message);
+        return new PrivateChannel("chat.greet.{$this->user->id}");
     }
 }
